@@ -1,0 +1,53 @@
+server:
+  port: 8082
+
+my:
+  name: forezp
+  age: 12
+  numjber: ${random.int}
+  uuid: ${random.uuid}
+  max:  ${random.int(10)}
+  value: ${random.value}
+  greeting: hi,i'm ${my.name}
+
+#读取指定环境配置文件
+spring:
+  profiles:
+    active: dev
+  datasource: #配置数据源
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/spring-cloud?useUnicode=true&serverTimezone=UTC&characterEncoding=utf8&characterSetResults=utf8
+      username: root
+      password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: create #第一次建表create  后面用update
+    show-sql: true
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    database: 1
+    jedis:
+      pool:
+        max-active: 8  # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1  # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 50 # 连接池中的最大空闲连接
+
+
+#配置Actuator 对外暴露的REST API 端口
+management:
+  server:
+    port: 9001
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env,metrics,beans,dump,env,mappings,trace
+      base-path: /actuator
+  health:
+    diskspace:
+      enabled: true
+
+
+
+
